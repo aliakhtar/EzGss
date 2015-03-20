@@ -54,6 +54,11 @@ public class Transformer
 
             CSSStyleRule cssRule = (CSSStyleRule) rule;
             String selector = cssRule.getSelectorText().toLowerCase().trim();
+            if (! selector.contains("."))
+                continue;
+
+            log.info( selector );
+
             if (! selector.startsWith("."))
                 continue;
 
