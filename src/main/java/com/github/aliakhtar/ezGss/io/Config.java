@@ -8,10 +8,21 @@ import java.util.logging.Logger;
 
 public class Config
 {
-    private final Logger log = Logging.get(this);
-    private static final String WORKING_DIR =  System.getProperty("user.dir");
+    private static final Logger log = Logging.get( Config.class );
     private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
+    private static final String WORKING_DIR =  readWorkingDir();
 
+
+    private static String readWorkingDir()
+    {
+        String dir = System.getProperty("user.dir");
+
+        //Make sure there's no trailing slash, for consistency:
+        if ( dir.endsWith( separator() ))
+            dir = dir.substring(0, dir.length() -1 );
+
+        return dir;
+    }
 
     public static String workingDir()
     {
