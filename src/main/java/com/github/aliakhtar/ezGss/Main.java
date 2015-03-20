@@ -2,11 +2,7 @@ package com.github.aliakhtar.ezGss;
 
 public class Main
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
-        for (String a : args)
-        {
-            System.out.println(a);
-        }
     }
 }
