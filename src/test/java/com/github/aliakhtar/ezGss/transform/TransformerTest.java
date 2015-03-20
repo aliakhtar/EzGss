@@ -1,6 +1,7 @@
 package com.github.aliakhtar.ezGss.transform;
 
 import com.github.aliakhtar.ezGss.util.Logging;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.logging.Logger;
@@ -19,10 +20,11 @@ public class TransformerTest
         log.info( transformer.getRawClasses().toString() );
     }
 
+    @Ignore
     @Test
     public void testBootstrap() throws Exception
     {
         Transformer transformer = new Transformer(BOOTSTRAP);
-        log.info( transformer.getRawClasses().toString() );
+        log.info(transformer.getRawClasses().toString());
     }
 }

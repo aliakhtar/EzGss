@@ -58,10 +58,6 @@ public class Transformer
                 continue;
 
             log.info( selector );
-
-            if (! selector.startsWith("."))
-                continue;
-
             classes.add(selector);
         }
 
