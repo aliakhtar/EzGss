@@ -5,6 +5,7 @@ import com.github.aliakhtar.ezGss.util.Logging;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,9 +17,10 @@ public class Reader
 {
     private final Logger log = Logging.get(this);
 
-    public String readFile(String absolutePath)
+    public String readFile(String readPath)
             throws IOException
     {
+        String absolutePath = resolve(readPath);
         Path path = Paths.get(absolutePath);
         try (BufferedReader reader = Files.newBufferedReader(path))
         {
@@ -31,6 +33,14 @@ public class Reader
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public InputStreamReader getStreamReader(String readPath)
+            throws IOException
+    {
+        String absolutePath = resolve(readPath);
+        Path path = Paths.get(absolutePath);
+        return new InputStreamReader( Files.newInputStream(path) );
     }
 
 

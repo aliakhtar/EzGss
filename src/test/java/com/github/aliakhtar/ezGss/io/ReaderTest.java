@@ -3,6 +3,7 @@ package com.github.aliakhtar.ezGss.io;
 import com.github.aliakhtar.ezGss.util.Logging;
 import org.junit.Test;
 
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -45,10 +46,15 @@ public class ReaderTest
     {
         Reader reader = new Reader();
         String output = reader.readFile(BASIC);
-        log.info(output);
         assertNotNull(output);
         assertFalse(output, output.trim().isEmpty());
         assertTrue(output, output.contains("{"));
         assertTrue(output, output.contains("}"));
+
+        InputStreamReader stream = reader.getStreamReader(BASIC);
+        assertNotNull( stream );
+        assertTrue( stream.ready() );
+        stream.read();
+        stream.close();
     }
 }
