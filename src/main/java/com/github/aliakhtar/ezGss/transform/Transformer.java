@@ -4,11 +4,17 @@ import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 import com.steadystate.css.parser.CSSOMParser;
 import org.w3c.css.sac.InputSource;
+import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSStyleRule;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class Transformer
@@ -16,8 +22,7 @@ public class Transformer
     private final Logger log = Logging.get(this);
 
     private final String sourcePath;
-    private final CSSOMParser parser = new CSSOMParser();
-    private final CSSStyleSheet styleSheet;
+    private final Set<String> rawClasses;
 
     public Transformer(String sourcePath)
             throws IOException
@@ -27,13 +32,40 @@ public class Transformer
         Reader reader = new Reader();
 
         InputStreamReader streamReader = reader.getStreamReader(sourcePath);
-        styleSheet = parser.parseStyleSheet( new InputSource(streamReader), null, null);
 
+        CSSOMParser parser = new CSSOMParser();
+        CSSStyleSheet styleSheet =
+                parser.parseStyleSheet( new InputSource(streamReader), null, null);
+
+        rawClasses = parse(styleSheet);
+        streamReader.close();
+    }
+
+    private Set<String> parse(CSSStyleSheet styleSheet)
+    {
+        CSSRuleList ruleList = styleSheet.getCssRules();
+        Set<String> classes = new HashSet<>( ruleList.getLength() );
+
+        for (int i = 0; i < ruleList.getLength(); i++)
+        {
+            CSSRule rule = ruleList.item(i);
+            if (! (rule instanceof CSSStyleRule))
+                continue;
+
+            CSSStyleRule cssRule = (CSSStyleRule) rule;
+            String selector = cssRule.getSelectorText().toLowerCase().trim();
+            if (! selector.startsWith("."))
+                continue;
+
+            classes.add(selector);
+        }
+
+        return classes;
     }
 
 
     public Collection<String> getRawClasses()
     {
-        return null;
+        return rawClasses;
     }
 }
