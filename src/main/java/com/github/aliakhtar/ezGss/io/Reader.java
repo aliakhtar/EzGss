@@ -2,7 +2,13 @@ package com.github.aliakhtar.ezGss.io;
 
 import com.github.aliakhtar.ezGss.util.Logging;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import static com.github.aliakhtar.ezGss.io.Config.*;
@@ -10,9 +16,21 @@ public class Reader
 {
     private final Logger log = Logging.get(this);
 
-    public String readFile(String path)
+    public String readFile(String absolutePath)
+            throws IOException
     {
-        return null;
+        Path path = Paths.get(absolutePath);
+        try (BufferedReader reader = Files.newBufferedReader(path))
+        {
+            StringBuilder sb = new StringBuilder();
+            reader.lines().forEach(sb::append);
+
+            return sb.toString().trim();
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 
