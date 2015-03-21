@@ -52,8 +52,8 @@ public class Main
         String dest = args[1].trim();
         String packageName = "???";
 
-        if (! source.toLowerCase().endsWith(".gss") )
-            exit( format("%s doesn't end in .gss", source) );
+        if (! source.toLowerCase().endsWith(".gss") && ! source.toLowerCase().endsWith(".css") )
+            exit( format("%s doesn't end in .gss or .css", source) );
 
         if (args.length < 3 || ( args.length == 3 && args[2].trim().isEmpty() ) )
             System.out.println( format("(No package name given, using %s as package)", packageName) );
