@@ -34,7 +34,7 @@ public class Main
     {
         String usage = "Usage: java -jar EzGss.jar <source.gss> <dest[.java]> [package]";
         if (args.length == 0)
-            exit(usage);
+            exit(usage, false);
 
         if (args[0].trim().isEmpty())
             exit(usage);
@@ -45,7 +45,7 @@ public class Main
         if (args.length < 2 || args[1].trim().isEmpty() )
             exit("Please provide the path where the resulting GssResource interface will be written.");
 
-        if (args.length > 3 || args[2].trim().isEmpty() )
+        if (args.length > 3 )
             exit( format("%d arguments provided, please provide 3 arguments, in the format: <source> <dest> [package]", args.length) );
 
         String source = args[0].trim();
@@ -55,10 +55,10 @@ public class Main
         if (! source.toLowerCase().endsWith(".gss") )
             exit( format("%s doesn't end in .gss", source) );
 
-        if (args.length < 2 || args[2].trim().isEmpty() )
+        if (args.length < 3 || ( args.length == 3 && args[2].trim().isEmpty() ) )
             System.out.println( format("(No package name given, using %s as package)", packageName) );
         else
-            packageName = args[2];
+            packageName = args[2].trim();
 
         req = new Request(source, dest, packageName);
 
@@ -77,9 +77,17 @@ public class Main
         }
     }
 
-    private void exit(String message)
+    private void exit(String msg)
     {
-        System.out.println(message);
+        exit(msg, true);
+    }
+
+    private void exit(String message, boolean isError)
+    {
+        if (! isError)
+            System.out.println(message);
+        else
+            System.err.println(message);
         System.exit(0);
     }
 }
