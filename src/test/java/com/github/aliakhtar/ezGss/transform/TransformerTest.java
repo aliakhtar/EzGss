@@ -25,22 +25,6 @@ public class TransformerTest
     }
 
     @Test
-    @Ignore
-    public void testGetRawClasses() throws Exception
-    {
-        Transformer transformer = new Transformer(BASIC);
-        log.info( transformer.getRawClasses().toString() );
-    }
-
-    @Ignore
-    @Test
-    public void testBootstrap() throws Exception
-    {
-        Transformer transformer = new Transformer(BOOTSTRAP_MIN);
-        log.info(transformer.getRawClasses().toString());
-    }
-
-    @Test
     public void testStripComments() throws Exception
     {
         for (String file : allTestStylesheets() )
