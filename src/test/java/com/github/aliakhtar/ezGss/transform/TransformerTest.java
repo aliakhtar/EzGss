@@ -57,7 +57,17 @@ public class TransformerTest
             String parsed = stripUrls(reader.readFile(file));
             testNoUrls(parsed);
         }
-        log.info( Transformer.stripUrls( reader.readFile(BASIC) ) );
+    }
+
+    @Test
+    public void testCleanUp() throws Exception
+    {
+        for (String file : allTestStylesheets() )
+        {
+            String parsed = cleanUp(reader.readFile(file));
+            testNoComments(parsed);
+            testNoUrls(parsed);
+        }
     }
 
     private void testNoComments(String parsed)

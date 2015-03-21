@@ -89,4 +89,11 @@ public class Transformer
     {
         return URL_PATTERN.matcher(cssBlob).replaceAll("");
     }
+
+    public static String cleanUp( @NotNull String cssBlob)
+    {
+        cssBlob = stripComments(cssBlob);
+        cssBlob = stripUrls(cssBlob);
+        return cssBlob;
+    }
 }
