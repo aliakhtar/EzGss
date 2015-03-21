@@ -32,6 +32,8 @@ public class Transformer implements Iterable<Transformation>
     private final static String FILE_TPL = Reader.readResource("fileTemplate.txt");
     private final static String METHOD_TPL = Reader.readResource("methodTemplate.txt");
 
+    private final static Set<String> RESERVED_KEYWORDS = getReservedKeywords();
+
     private final Logger log = Logging.get(this);
 
     private final String javaClassName;
@@ -39,6 +41,7 @@ public class Transformer implements Iterable<Transformation>
     private final Set<String> javaMethods;
     private final List<Transformation> transforms;
     private String finalOutput;
+    private Set<String> reservedKeywords;
 
     public Transformer(String javaClassName, String cssBlob)
             throws IOException
@@ -155,6 +158,9 @@ public class Transformer implements Iterable<Transformation>
         if (javaMethodName.contains("_"))
             javaMethodName = LOWER_UNDERSCORE.to(LOWER_CAMEL, javaMethodName);
 
+        if (RESERVED_KEYWORDS.contains(javaMethodName))
+            javaMethodName += "_";
+
         return javaMethodName;
     }
 
@@ -186,5 +192,32 @@ public class Transformer implements Iterable<Transformation>
     public Iterator<Transformation> iterator()
     {
         return transforms.iterator();
+    }
+
+    private static Set<String> getReservedKeywords()
+    {
+        String[] reserved = new String[]
+        {
+                "assert",
+                "abstract", "boolean", "break", "byte",
+                "case", "catch", "char", "class",
+                "const", "continue", "default", "do",
+                "double", "else", "enum", "extends",
+                "false", "final",
+                "finally", "float", "for", "goto",
+                "if", "implements", "import",
+                "instanceof", "int", "interface",
+                "long", "native", "new", "null", "package",
+                "private", "protected", "public",
+                "return", "short", "static", "strictfp", "super",
+                "switch", "synchronized", "this",
+                "throw", "throws", "transient",
+                "try",  "true", "void", "volatile", "while",
+        };
+
+        //Using a set as there may be duplicates in the array
+        Set<String> result = new HashSet<>( );
+        result.addAll( Arrays.asList(reserved) );
+        return result;
     }
 }
