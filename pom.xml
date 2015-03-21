@@ -9,9 +9,15 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>EzGss</name>
 
+    <developers>
+        <developer>
+            <name>Ali Akhtar</name>
+            <email>ali.rac200@gmail.com</email>
+        </developer>
+    </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <!-- Convenience property to set the GWT version -->
       <guava.version>18.0</guava.version>
       <junit.version>4.12</junit.version>
   </properties>
