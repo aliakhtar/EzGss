@@ -18,7 +18,7 @@ public class RequestTest
 
     private void testClassName(String source, String dest, String expected)
     {
-        Request r = new Request(source, dest);
+        Request r = new Request(source, dest, "???");
 
         assertEquals(r.getJavaClassName(), expected, r.getJavaClassName());
     }

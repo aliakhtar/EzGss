@@ -103,7 +103,7 @@ public class TransformerTest
     {
         for (String file : allTestStylesheets() )
         {
-            Transformer t = new Transformer("", reader.readFile(file) );
+            Transformer t = new Transformer("com.foo.bar","SomeClass", reader.readFile(file) );
             assertTrue(t.toString(), t.getCssClasses().size() == t.getJavaMethodNames().size() );
             assertTrue( t.toString(), t.getCssClasses().size() == t.getTransformations().size() );
 
