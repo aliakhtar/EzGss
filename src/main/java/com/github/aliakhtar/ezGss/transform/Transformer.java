@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import static java.util.regex.Pattern.*;
 public class Transformer
 {
     private final Logger log = Logging.get(this);
@@ -24,8 +25,14 @@ public class Transformer
     private final Set<String> rawClasses;
 
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
+
     private final static String URL_REGEX = "url\\([^)]+?\\)";
-    private final static String CSS_CLASS_PATTERN = "\\.[A-Z][\\w-]*";
+    private static final Pattern URL_PATTERN =
+            compile(URL_REGEX, CASE_INSENSITIVE);
+
+    private final static String CSS_CLASS_REGEX = "\\.[A-Z][\\w-]*";
+    private final static Pattern CSS_CLASS_PATTERN
+            = compile(CSS_CLASS_REGEX, CASE_INSENSITIVE);
 
     public Transformer(String sourcePath)
             throws IOException
@@ -77,8 +84,9 @@ public class Transformer
     {
         return cssBlob.replaceAll(COMMENT_REGEX, "");
     }
+
     public static String stripUrls(@NotNull String cssBlob)
     {
-        return cssBlob.replaceAll(URL_REGEX, "");
+        return URL_PATTERN.matcher(cssBlob).replaceAll("");
     }
 }

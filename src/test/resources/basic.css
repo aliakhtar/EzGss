@@ -7,16 +7,21 @@ These comments are necessary for testing comment removal.
 p {} /* Testing a simple selector*/
 
 /** Testing classes*/
-.foo {}
+.foo
+{
+    URL(../BaR.png);
+}
 b {}
-.bar {}
+.bar {
+    url(../foo.png);
+}
 #baz {}
 /* Testing multiline*/h1
 {
     /**
-    Jack and jill
-    Went up the hill
-    to fetch a pale of water
+    Inline comment test 1
+    Inline comment test 2
+    Inline comment test 3
     */
     color: #000000;
 }
