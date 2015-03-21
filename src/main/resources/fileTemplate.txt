@@ -4,5 +4,4 @@ import com.google.gwt.resources.client.CssResource;
 
 public interface $className extends CssResource
 {
-    $methods
-}
+$methods}
