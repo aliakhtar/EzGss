@@ -66,7 +66,7 @@ can also be provided, e.g:
 `java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo/AnotherName.java com.foo`
 
 If the file or directories specified in `dest` don't exist, they will be created. If
-the file already exists, it will be overwritten. For example, if the directories `com/foo`
+the file already exists, it will be overwritten. For example, if the directories `java/com/foo`
 didn't exist when the above command was run, they would be created.
 
 
