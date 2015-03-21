@@ -30,7 +30,7 @@ public class Request
     private String detectJavaClassName()
     {
         //For Something.java , return Something, stripping out .java
-        if (dest.isFile() )
+        if (dest.isFile() || dest.getName().toLowerCase().endsWith(".java"))
             return dest.getName().substring( 0, dest.getName().lastIndexOf(".") );
 
 

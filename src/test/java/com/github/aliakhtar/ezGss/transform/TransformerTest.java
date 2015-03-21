@@ -111,8 +111,6 @@ public class TransformerTest
                 assertFalse( t.toString(), t.getTransformations().isEmpty() );
             else
                 assertTrue( t.toString(), t.getTransformations().isEmpty() );
-
-            System.out.println( t.getFinalJavaCode() );
         }
     }
 
