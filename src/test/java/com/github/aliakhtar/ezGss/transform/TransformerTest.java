@@ -25,7 +25,7 @@ public class TransformerTest
     @Test
     public void testBootstrap() throws Exception
     {
-        Transformer transformer = new Transformer(BOOTSTRAP);
+        Transformer transformer = new Transformer(BOOTSTRAP_MIN);
         log.info(transformer.getRawClasses().toString());
     }
 
@@ -33,21 +33,19 @@ public class TransformerTest
     public void testCommentRemoval() throws Exception
     {
         Reader r = new Reader();
-        String css = r.readFile(BASIC);
-        String parsed = Transformer.removeComments(css);
-
-        testNoComments(parsed);
-
-        css = r.readFile(BOOTSTRAP);
-        parsed = Transformer.removeComments(css);
-        testNoComments(parsed);
+        testNoComments(BASIC, BOOTSTRAP_MIN, FOUNDATION, FOUNDATION_MIN, NORMALIZE);
     }
 
-    private void testNoComments(String parsed)
+    private void testNoComments(String... files) throws Exception
     {
-        assertNotNull(parsed);
-        assertFalse( parsed, parsed.isEmpty()  );
-        assertFalse(parsed, parsed.contains("/*"));
-        assertFalse(parsed, parsed.contains("*/"));
+        Reader r = new Reader();
+        for (String file : files)
+        {
+            String parsed = Transformer.removeComments( r.readFile(file) );
+            assertNotNull(parsed);
+            assertFalse( parsed, parsed.isEmpty()  );
+            assertFalse(parsed, parsed.contains("/*"));
+            assertFalse(parsed, parsed.contains("*/"));
+        }
     }
 }

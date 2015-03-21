@@ -9,5 +9,11 @@ public class TestFiles
                                                                    + "resources";
     public static final String BASIC = DIR + separator() + "basic.css";
 
-    public static final String BOOTSTRAP = DIR + separator() + "bootstrap.min.css";
+    public static final String BOOTSTRAP_MIN = DIR + separator() + "bootstrap.min.css";
+
+    public static final String FOUNDATION = DIR + separator() + "foundation.css";
+
+    public static final String FOUNDATION_MIN = DIR + separator() + "foundation.min.css";
+
+    public static final String NORMALIZE = DIR + separator() + "normalize.css";
 }
