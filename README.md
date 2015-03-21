@@ -57,7 +57,7 @@ run the following:
 
 `cd ~/project/src/main #Switch to the project directory if necessary`
 
-`java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo com.foo`
+`java -jar /path/to/ezGss.jar resources/com/foo/foo-bar.gss java/com/foo com.foo`
 
 This will generate the file `FooBar.java` in `~/project/src/main/resources/com/foo`.
 The name `FooBar` is inferred from `foo-bar.gss`, though an absolute name
