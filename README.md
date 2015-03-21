@@ -1,2 +1,116 @@
 # EzGss
-Todo
+
+A tool for generating java CssResource files from .gss stylesheets, for 
+[Google Web Toolkit](http://www.gwtproject.org).
+
+Takes the following:
+
+    .foo{}
+    .foo-bar-1{}
+    .foo_bar_2{}
+    .switch{} /*Java reserved keyword*/
+    
+and produces:    
+
+    package test;
+
+    import com.google.gwt.resources.client.CssResource;
+
+    public interface Test extends CssResource
+    {
+        @ClassName("foo")
+        String foo();
+
+        @ClassName("foo-bar-1")
+        String fooBar1();
+
+        @ClassName("foo_bar_2")
+        String fooBar2();
+
+        @ClassName("switch")
+        String switch_();
+    }
+
+##Install
+
+Just clone the repo, then run `mvn clean install` from command line.
+
+To install as well as copy the resulting jar to the home directory (on Linux), run
+`compile.sh`.
+
+##Usage
+
+`java -jar ezGss.jar <source> <dest> [package]`
+
+`source` is the path to the `.gss` file, `dest` is the path where the resulting 
+.java file will be generated, and `package` is an optional argument to supply the 
+package of the `.java` file.
+
+`dest` can be the directory where the file should be created, the file/class name 
+can be inferred from the .gss file. E.g `foo-bar.gss` will be translated to `FooBar.java`.
+However, the full name can also be specified if necessary.
+ 
+The paths can either be absolute, or they can be relative to the working directory.
+For example, if your .gss file is located at `~/project/src/main/resources/com/foo/foo-bar.gss`,
+and you'd like `~/project/src/main/java/com/foo/FooBar.java` to be created, you can
+run the following:
+
+`cd ~/project/src/main #Switch to the project directory if necessary`
+
+`java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo com.foo`
+
+This will generate the file `FooBar.java` in `~/project/src/main/resources/com/foo`.
+The name `FooBar` is inferred from `foo-bar.gss`, though an absolute name
+can also be provided, e.g: `~/project/src/main/java/com/foo/SomeOtherName.java`.
+
+To specify a different file for the java class, it can be done via:
+
+`java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo/AnotherName.java com.foo`
+
+If the file or directories specified in `dest` don't exist, they will be created. If
+the file already exists, it will be overwritten. For example, if the directories `com/foo`
+didn't exist when the above command was run, they would be created.
+
+
+##Conversion of CSS class names to java methods
+
+All css class names would be converted from hyphens or underscores to camelCase. E.g:
+`foo-bar` will become `fooBar`, `foo_bar` will become `fooBar`, `FOOBAR`, `fooBar`, 
+ and `FOO_BAR` will be unchanged, however **`camelCase_1` will become `camelcase1`** .
+ (Notice that all letters were lower cased). 
+ 
+ If a css class is a reserved java keyword, such as `switch`, an underscore
+ will be appended to it in the method name, e.g `switch_`.
+ 
+##Known Issues
+ 
+If a css class contains either an underscore or a hyphen, it will be lower cased,
+hyphens / underscores removed, and it will attempt to lower case it. Normally
+this works without issue, but if you have a mix of camel case and underscores/hyphens,
+your css style will be completely lower cased. E.g `camelCaseCase1` will become
+`camelcasecase1`.
+
+As long as you don't have a mix of camelCase and hyphens/underscores in the same 
+class name, you shouldn't encounter this issue.
+
+If the file specified in `dest` already exists, it will be overwritten. Its
+not recommended to use this tool unless you have version control set up in your
+project.
+
+This library is experimental, please examine the output carefully. Use at
+your own risk!
+
+##Wish List
+
+- Ability to run files in batch, take a directory and run across all the .gss
+files inside as well as sub-directories, without needing each file to be specified
+individually.
+
+- Generate the `ClientBundle` for the .gss files as well.
+
+Pull requests welcome!
+
+##License
+
+Apache 2.0. Feel free to use it liberally / fork it. If you are from Jetbeans,
+please consider using this to improve support for GssResources in Intellij.
