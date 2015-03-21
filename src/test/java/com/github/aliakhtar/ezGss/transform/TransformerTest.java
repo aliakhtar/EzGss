@@ -72,6 +72,16 @@ public class TransformerTest
         }
     }
 
+    @Test
+    public void testToJavaMethodName() throws Exception
+    {
+        String java = toJavaMethodName("foo-bar-1");
+        assertEquals(java, "fooBar1", java);
+
+        java = toJavaMethodName("foo_Bar3_1");
+        assertEquals(java, "fooBar31", java);
+    }
+
     private void testNoComments(String parsed)
     {
         assertNotNull(parsed);

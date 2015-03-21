@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.*;
+import static com.google.common.base.CaseFormat.*;
 public class Transformer
 {
     private final Logger log = Logging.get(this);
@@ -53,6 +54,7 @@ public class Transformer
 
     public static String cleanUp(String cssBlob)
     {
+        cssBlob = cssBlob.toLowerCase();
         cssBlob = stripComments(cssBlob);
         cssBlob = stripUrls(cssBlob);
         return cssBlob;
@@ -70,5 +72,18 @@ public class Transformer
         }
 
         return classes;
+    }
+
+    public static String toJavaMethodName(String cssClassName)
+    {
+        String javaMethodName = cssClassName;
+
+        if (javaMethodName.contains("-"))
+            javaMethodName = LOWER_HYPHEN.to(LOWER_CAMEL, javaMethodName);
+
+        if (javaMethodName.contains("_"))
+            javaMethodName = LOWER_UNDERSCORE.to(LOWER_CAMEL, javaMethodName);
+
+        return javaMethodName;
     }
 }

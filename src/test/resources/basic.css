@@ -28,3 +28,5 @@ b {}
 
 /**Testing long selector*/
 div.foo2 p.test {}
+
+.fooBar, .FOOBAR2, .FOO_baR3, .bar-foo-4, .baR_foo_5{}
