@@ -1,8 +1,10 @@
 package com.github.aliakhtar.ezGss.transform;
 
+import com.github.aliakhtar.ezGss.Request;
 import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -154,6 +156,16 @@ public class Transformer implements Iterable<Transformation>
             javaMethodName = LOWER_UNDERSCORE.to(LOWER_CAMEL, javaMethodName);
 
         return javaMethodName;
+    }
+
+    public String results(Request req)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Done, source: ").append( req.getSource().getAbsolutePath() )
+                .append(", dest: ").append( req.getDest().getAbsolutePath() );
+        sb.append(", css classes: ").append(cssClasses.size())
+          .append(", java method names: ").append(javaMethods.size() );
+        return sb.toString();
     }
 
     @Override

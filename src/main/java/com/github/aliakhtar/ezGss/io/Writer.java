@@ -12,6 +12,6 @@ public class Writer
             throws IOException
     {
         Path path = Paths.get(absPath);
-        Files.write(path, output.getBytes(), TRUNCATE_EXISTING, WRITE);
+        Files.write(path, output.getBytes(), CREATE, TRUNCATE_EXISTING, WRITE);
     }
 }

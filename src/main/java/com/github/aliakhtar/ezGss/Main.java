@@ -4,6 +4,8 @@ import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.io.Writer;
 import com.github.aliakhtar.ezGss.transform.Transformer;
 
+import java.io.File;
+
 import static java.lang.String.format;
 public class Main
 {
@@ -22,6 +24,8 @@ public class Main
 
         transformer = new Transformer( req.getJavaClassName(), cssBlob );
         new Writer().writeOrOverwrite(req.getDest().getAbsolutePath(), transformer.getFinalJavaCode() );
+
+        exit( transformer.results(req) );
     }
 
     private void validate(String[] args)
@@ -53,7 +57,12 @@ public class Main
             exit(format("Source file: %s is not readable", req.getSource().getAbsolutePath()));
 
         if (! req.getDest().exists())
-            req.getDest().mkdirs();
+        {
+            String dirPath = req.getDest().getAbsolutePath();
+            dirPath = dirPath.replace( req.getDest().getName(), "" );
+            File dir = new File(dirPath);
+            dir.mkdirs();
+        }
     }
 
     private void exit(String message)
