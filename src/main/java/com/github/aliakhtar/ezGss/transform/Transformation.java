@@ -3,7 +3,7 @@ package com.github.aliakhtar.ezGss.transform;
 import com.github.aliakhtar.ezGss.util.Logging;
 
 
-public class Transformation
+public class Transformation implements Comparable<Transformation>
 {
     private final String cssClass;
     private final String javaMethod;
@@ -29,5 +29,11 @@ public class Transformation
     public String toString()
     {
         return String.format("[%s -> %s]", cssClass, javaMethod);
+    }
+
+    @Override
+    public int compareTo(Transformation o)
+    {
+        return javaMethod.compareTo( o.getJavaMethod() );
     }
 }

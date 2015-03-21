@@ -88,6 +88,7 @@ public class Transformer implements Iterable<Transformation>
         String tpl = FILE_TPL.replace("$className", javaClassName);
         StringBuilder sb = new StringBuilder();
 
+        Collections.sort(transforms);
         for (Transformation t : transforms )
         {
             String method = METHOD_TPL.replace("$css", t.getCssClass());
