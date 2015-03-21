@@ -63,7 +63,7 @@ public class Reader
         throw new IllegalArgumentException("Path not found: " + path + " , attempted: " + newPath);
     }
 
-    public static String readResource(String path)
+    public static String readResource(String path, boolean changeLineEndings)
     {
         ClassLoader clsLoader = Reader.class.getClassLoader();
         try (
@@ -74,7 +74,10 @@ public class Reader
         {
             StringBuilder sb = new StringBuilder();
             reader.lines().forEach(sb::append);
-            return sb.toString();
+            if (! changeLineEndings)
+                return sb.toString();
+            else
+                return sb.toString().replace("\n", "\r\n");
         }
         catch (Exception e)
         {
