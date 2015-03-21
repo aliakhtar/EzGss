@@ -61,9 +61,7 @@ run the following:
 
 This will generate the file `FooBar.java` in `~/project/src/main/resources/com/foo`.
 The name `FooBar` is inferred from `foo-bar.gss`, though an absolute name
-can also be provided, e.g: `~/project/src/main/java/com/foo/SomeOtherName.java`.
-
-To specify a different file for the java class, it can be done via:
+can also be provided, e.g: 
 
 `java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo/AnotherName.java com.foo`
 
