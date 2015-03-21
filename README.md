@@ -51,19 +51,19 @@ can be inferred from the .gss file. E.g `foo-bar.gss` will be translated to `Foo
 However, the full name can also be specified if necessary.
  
 The paths can either be absolute, or they can be relative to the working directory.
-For example, if your .gss file is located at `~/project/src/main/resources/com/foo/foo-bar.gss`,
-and you'd like `~/project/src/main/java/com/foo/FooBar.java` to be created, you can
+For example, if your .gss file is located at `~/project/src/main/resources/com/foo/my-styles.gss`,
+and you'd like `~/project/src/main/java/com/foo/MyStyles.java` to be created, you can
 run the following:
 
 `cd ~/project/src/main #Switch to the project directory if necessary`
 
-`java -jar /path/to/ezGss.jar resources/com/foo/foo-bar.gss java/com/foo com.foo`
+`java -jar /path/to/ezGss.jar resources/com/foo/my-styles.gss java/com/foo com.foo`
 
-This will generate the file `FooBar.java` in `~/project/src/main/resources/com/foo`.
-The name `FooBar` is inferred from `foo-bar.gss`, though an absolute name
+This will generate the file `MyStyles.java` in `~/project/src/main/resources/com/foo`.
+The name `MyStyles` is inferred from `my-styles.gss`, though an absolute name
 can also be provided, e.g: 
 
-`java -jar ezGss.jar resources/com/foo/foo-bar.gss java/com/foo/AnotherName.java com.foo`
+`java -jar ezGss.jar resources/com/foo/my-styles.gss java/com/foo/AnotherName.java com.foo`
 
 If the file or directories specified in `dest` don't exist, they will be created. If
 the file already exists, it will be overwritten. For example, if the directories `java/com/foo`
@@ -82,16 +82,16 @@ All css class names would be converted from hyphens or underscores to camelCase.
  
 ##Recommended 
 
-Create a bash script / batch file containing the command to run this
+Create a bash script / batch file containing the commands to run this
 tool on all .gss files in your project. Simply run the script each time the Java files
-need to be synced / updated with the .gss files.
+need to be synced with the .gss files.
  
 ##Known Issues
  
 If you have a mix of hyphens/underscores and camelCase in your css class names,
 be aware that the resulting java method will be in completely lower case with
 hyphens/underscores removed. E.g `.camelCaseTest_1` will have the method 
-`camelcasetest_1`.
+`camelcasetest1`.
 
 If the file specified in `dest` already exists, it will be overwritten. Its
 not recommended to use this tool if you don't have version control set up in your
@@ -112,5 +112,5 @@ Pull requests welcome!
 
 ##License
 
-Apache 2.0. Feel free to use it liberally / fork it. If you are from Jetbeans,
+Apache 2.0. Use freely. If you are from Jet Brains,
 please consider using this to improve support for GssResources in Intellij.
