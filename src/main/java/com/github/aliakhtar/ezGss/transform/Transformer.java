@@ -1,5 +1,6 @@
 package com.github.aliakhtar.ezGss.transform;
 
+import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 
 import java.io.IOException;
@@ -23,6 +24,10 @@ public class Transformer implements Iterable<Transformation>
     private final static Pattern CSS_CLASS_PATTERN
             = compile(CSS_CLASS_REGEX, CASE_INSENSITIVE);
 
+
+    private final static String FILE_TPL = Reader.readResource("fileTemplate.txt");
+    private final static String METHOD_TPL = Reader.readResource("methodTemplate.txt");
+
     private final Logger log = Logging.get(this);
 
     private final Collection<String> cssClasses;
@@ -32,7 +37,6 @@ public class Transformer implements Iterable<Transformation>
     public Transformer(String cssBlob)
             throws IOException
     {
-
         cssClasses = getCssClasses( cssBlob );
         javaMethods = new HashSet<>( cssClasses.size() );
         transforms = new ArrayList<>( cssClasses.size() );

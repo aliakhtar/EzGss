@@ -2,10 +2,7 @@ package com.github.aliakhtar.ezGss.io;
 
 import com.github.aliakhtar.ezGss.util.Logging;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,4 +63,22 @@ public class Reader
         throw new IllegalArgumentException("Path not found: " + path + " , attempted: " + newPath);
     }
 
+    public static String readResource(String path)
+    {
+        ClassLoader clsLoader = Reader.class.getClassLoader();
+        try (
+                   InputStream is = clsLoader.getResourceAsStream(path);
+                   InputStreamReader isr = new InputStreamReader(is);
+                   BufferedReader reader = new BufferedReader(isr);
+            )
+        {
+            StringBuilder sb = new StringBuilder();
+            reader.lines().forEach(sb::append);
+            return sb.toString();
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException(e);
+        }
+    }
 }

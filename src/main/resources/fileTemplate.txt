@@ -1,0 +1,8 @@
+package ???;
+
+import com.google.gwt.resources.client.CssResource;
+
+public interface Normalize extends CssResource
+{
+    $methods
+}
