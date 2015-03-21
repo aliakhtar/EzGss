@@ -1,11 +1,20 @@
-p {}
+/** Just a simple, test css file.
+* Used for performing unit tests.
+
+These comments are necessary for testing comment removal.
+*/
+
+p {} /* Testing a simple selector*/
+
+/** Testing classes*/
 .foo {}
 b {}
 .bar {}
 #baz {}
-h1
+/* Testing multiline*/h1
 {
 
 }
 
+/**Testing long selector*/
 div.foo2 p.test {}

@@ -1,6 +1,7 @@
 package com.github.aliakhtar.ezGss.io;
 
 import com.github.aliakhtar.ezGss.util.Logging;
+import com.sun.istack.internal.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +18,7 @@ public class Reader
 {
     private final Logger log = Logging.get(this);
 
-    public String readFile(String readPath)
+    public String readFile(@NotNull String readPath)
             throws IOException
     {
         String absolutePath = resolve(readPath);
@@ -35,7 +36,7 @@ public class Reader
         }
     }
 
-    public InputStreamReader getStreamReader(String readPath)
+    public InputStreamReader getStreamReader(@NotNull String readPath)
             throws IOException
     {
         String absolutePath = resolve(readPath);
@@ -48,7 +49,7 @@ public class Reader
      * Resolves a path relative to the current working directory, to its
      * absolute path. If the path is already absolute, returns it as is.
      */
-    public static String resolve(String path)
+    public static String resolve(@NotNull String path)
     {
         if ( path.startsWith( workingDir() ) && exists(path)  )
             return path;

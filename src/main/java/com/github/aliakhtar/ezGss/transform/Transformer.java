@@ -3,6 +3,7 @@ package com.github.aliakhtar.ezGss.transform;
 import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 import com.steadystate.css.parser.CSSOMParser;
+import com.sun.istack.internal.NotNull;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
@@ -11,11 +12,9 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class Transformer
 {
@@ -23,6 +22,8 @@ public class Transformer
 
     private final String sourcePath;
     private final Set<String> rawClasses;
+
+    private final static String COMMENT_REGEX = "/\\*.+?\\*/";
 
     public Transformer(String sourcePath)
             throws IOException
@@ -68,5 +69,10 @@ public class Transformer
     public Collection<String> getRawClasses()
     {
         return rawClasses;
+    }
+
+    public static String removeComments(@NotNull String cssBlob)
+    {
+        return cssBlob.replaceAll(COMMENT_REGEX, "");
     }
 }
