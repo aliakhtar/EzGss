@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -67,6 +68,24 @@ public class TransformerTest
             String parsed = cleanUp(reader.readFile(file));
             testNoComments(parsed);
             testNoUrls(parsed);
+        }
+    }
+
+
+    @Test
+    public void testGetClasses() throws Exception
+    {
+        for (String file : allTestStylesheets() )
+        {
+            Set<String> classes = getCssClasses( reader.readFile(file) );
+            assertNotNull(classes);
+
+            //normalize.css contains no classes, therefore it should be empty:
+            if (file != NORMALIZE)
+                assertFalse(classes.toString(), classes.isEmpty() );
+            else
+                assertTrue( classes.toString(), classes.isEmpty() );
+            log.info( classes.toString() );
         }
     }
 

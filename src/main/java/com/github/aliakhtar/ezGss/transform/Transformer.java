@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.*;
@@ -95,5 +96,19 @@ public class Transformer
         cssBlob = stripComments(cssBlob);
         cssBlob = stripUrls(cssBlob);
         return cssBlob;
+    }
+
+    public static Set<String> getCssClasses(@NotNull String cssBlob)
+    {
+        cssBlob = cleanUp(cssBlob);
+        Matcher matcher = CSS_CLASS_PATTERN.matcher(cssBlob);
+
+        Set<String> classes = new HashSet<>();
+        while (matcher.find() )
+        {
+            classes.add( matcher.group() );
+        }
+
+        return classes;
     }
 }
