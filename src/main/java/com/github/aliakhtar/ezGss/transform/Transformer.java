@@ -24,6 +24,7 @@ public class Transformer
     private final Set<String> rawClasses;
 
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
+    private final static String URL_REGEX = "url\\([^)]+?\\)";
     private final static String CSS_CLASS_PATTERN = "\\.[A-Z][\\w-]*";
 
     public Transformer(String sourcePath)
@@ -72,8 +73,12 @@ public class Transformer
         return rawClasses;
     }
 
-    public static String removeComments(@NotNull String cssBlob)
+    public static String stripComments(@NotNull String cssBlob)
     {
         return cssBlob.replaceAll(COMMENT_REGEX, "");
+    }
+    public static String stripUrls(@NotNull String cssBlob)
+    {
+        return cssBlob.replaceAll(URL_REGEX, "");
     }
 }

@@ -2,6 +2,7 @@ package com.github.aliakhtar.ezGss.transform;
 
 import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -13,6 +14,13 @@ import static com.github.aliakhtar.ezGss.io.TestFiles.*;
 public class TransformerTest
 {
     Logger log = Logging.get(this);
+    private Reader reader;
+
+    @Before
+    public void setUp() throws Exception
+    {
+        reader = new Reader();
+    }
 
     @Test
     public void testGetRawClasses() throws Exception
@@ -30,22 +38,20 @@ public class TransformerTest
     }
 
     @Test
-    public void testCommentRemoval() throws Exception
+    public void testStripComments() throws Exception
     {
-        Reader r = new Reader();
-        testNoComments(BASIC, BOOTSTRAP_MIN, FOUNDATION, FOUNDATION_MIN, NORMALIZE);
+        for (String file : allTestStylesheets() )
+        {
+            String parsed = Transformer.stripComments(reader.readFile(file));
+            testNoComments( parsed );
+        }
     }
 
-    private void testNoComments(String... files) throws Exception
+    private void testNoComments(String parsed)
     {
-        Reader r = new Reader();
-        for (String file : files)
-        {
-            String parsed = Transformer.removeComments( r.readFile(file) );
-            assertNotNull(parsed);
-            assertFalse( parsed, parsed.isEmpty()  );
-            assertFalse(parsed, parsed.contains("/*"));
-            assertFalse(parsed, parsed.contains("*/"));
-        }
+        assertNotNull(parsed);
+        assertFalse( parsed, parsed.isEmpty()  );
+        assertFalse(parsed, parsed.contains("/*"));
+        assertFalse(parsed, parsed.contains("*/"));
     }
 }
