@@ -68,7 +68,7 @@ public class TransformerTest
             assertNotNull(classes);
 
             //normalize.css contains no classes, therefore it should be empty:
-            if (file != NORMALIZE)
+            if (! NORMALIZE.equals(file))
                 assertFalse(classes.toString(), classes.isEmpty() );
             else
                 assertTrue( classes.toString(), classes.isEmpty() );
@@ -91,6 +91,21 @@ public class TransformerTest
 
         java = toJavaMethodName("foo_Bar3_1");
         assertEquals(java, "fooBar31", java);
+    }
+
+    @Test
+    public void testParse() throws Exception
+    {
+        for (String file : allTestStylesheets() )
+        {
+            Transformer t = new Transformer( reader.readFile(file) );
+            assertTrue(t.toString(), t.getCssClasses().size() == t.getJavaMethodNames().size() );
+            assertTrue( t.toString(), t.getCssClasses().size() == t.getTransformations().size() );
+            if (! NORMALIZE.equals(file))
+                assertFalse( t.toString(), t.getTransformations().isEmpty() );
+            else
+                assertTrue( t.toString(), t.getTransformations().isEmpty() );
+        }
     }
 
     private void testNoComments(String parsed)

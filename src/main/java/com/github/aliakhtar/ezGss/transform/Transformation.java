@@ -28,6 +28,6 @@ public class Transformation
     @Override
     public String toString()
     {
-        return String.format("%s -> %s", cssClass, javaMethod);
+        return String.format("[%s -> %s]", cssClass, javaMethod);
     }
 }

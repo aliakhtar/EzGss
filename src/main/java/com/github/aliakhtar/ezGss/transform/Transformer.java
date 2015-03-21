@@ -1,10 +1,8 @@
 package com.github.aliakhtar.ezGss.transform;
 
-import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -13,7 +11,7 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.*;
 import static com.google.common.base.CaseFormat.*;
 import static java.lang.String.format;
-public class Transformer
+public class Transformer implements Iterable<Transformation>
 {
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
 
@@ -27,7 +25,7 @@ public class Transformer
 
     private final Logger log = Logging.get(this);
 
-    private final Collection<String> rawClasses;
+    private final Collection<String> cssClasses;
     private final Set<String> javaMethods;
     private final List<Transformation> transforms;
 
@@ -35,15 +33,15 @@ public class Transformer
             throws IOException
     {
 
-        rawClasses = getCssClasses( cssBlob );
-        javaMethods = new HashSet<>( rawClasses.size() );
-        transforms = new ArrayList<>( rawClasses.size() );
+        cssClasses = getCssClasses( cssBlob );
+        javaMethods = new HashSet<>( cssClasses.size() );
+        transforms = new ArrayList<>( cssClasses.size() );
         parse();
     }
 
     private void parse()
     {
-        for (String className : rawClasses)
+        for (String className : cssClasses)
         {
             String javaMethodName = toJavaMethodName(className).trim();
             if (javaMethodName.isEmpty() )
@@ -63,9 +61,9 @@ public class Transformer
         }
     }
 
-    public Collection<String> getRawClasses()
+    public Collection<String> getCssClasses()
     {
-        return rawClasses;
+        return cssClasses;
     }
 
     public Collection<String> getJavaMethodNames()
@@ -122,5 +120,25 @@ public class Transformer
             javaMethodName = LOWER_UNDERSCORE.to(LOWER_CAMEL, javaMethodName);
 
         return javaMethodName;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n");
+        for (Transformation t : transforms)
+        {
+            sb.append("\t").append(t).append("\n");
+        }
+        sb.append("], css classes: ").append(cssClasses.size())
+          .append(", java method names: ").append(javaMethods.size() );
+        return sb.toString();
+    }
+
+    @Override
+    public Iterator<Transformation> iterator()
+    {
+        return transforms.iterator();
     }
 }
