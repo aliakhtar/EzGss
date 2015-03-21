@@ -12,12 +12,9 @@ import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.*;
 import static com.google.common.base.CaseFormat.*;
+import static java.lang.String.format;
 public class Transformer
 {
-    private final Logger log = Logging.get(this);
-
-    private final Set<String> rawClasses;
-
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
 
     private final static String URL_REGEX = "url\\([^)]+?\\)";
@@ -28,19 +25,60 @@ public class Transformer
     private final static Pattern CSS_CLASS_PATTERN
             = compile(CSS_CLASS_REGEX, CASE_INSENSITIVE);
 
+    private final Logger log = Logging.get(this);
+
+    private final Collection<String> rawClasses;
+    private final Set<String> javaMethods;
+    private final List<Transformation> transforms;
+
     public Transformer(String cssBlob)
             throws IOException
     {
 
         rawClasses = getCssClasses( cssBlob );
+        javaMethods = new HashSet<>( rawClasses.size() );
+        transforms = new ArrayList<>( rawClasses.size() );
+        parse();
     }
 
+    private void parse()
+    {
+        for (String className : rawClasses)
+        {
+            String javaMethodName = toJavaMethodName(className).trim();
+            if (javaMethodName.isEmpty() )
+            {
+                log.warning(format("Skipping class: %s, couldn't be converted to java method name", className));
+                continue;
+            }
 
+            if (javaMethods.contains(javaMethodName))
+            {
+                log.warning(format("Skipping %s , duplicate java method name: %s", className, javaMethodName));
+                continue;
+            }
+
+            javaMethods.add(javaMethodName);
+            transforms.add( new Transformation(className, javaMethodName) );
+        }
+    }
 
     public Collection<String> getRawClasses()
     {
         return rawClasses;
     }
+
+    public Collection<String> getJavaMethodNames()
+    {
+        return javaMethods;
+    }
+
+    public Collection<Transformation> getTransformations()
+    {
+        return transforms;
+    }
+
+
 
     public static String stripComments(String cssBlob)
     {
@@ -54,13 +92,12 @@ public class Transformer
 
     public static String cleanUp(String cssBlob)
     {
-        cssBlob = cssBlob.toLowerCase();
         cssBlob = stripComments(cssBlob);
         cssBlob = stripUrls(cssBlob);
         return cssBlob;
     }
 
-    public static Set<String> getCssClasses(String cssBlob)
+    public static Collection<String> getCssClasses(String cssBlob)
     {
         cssBlob = cleanUp(cssBlob);
         Matcher matcher = CSS_CLASS_PATTERN.matcher(cssBlob);

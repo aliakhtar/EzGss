@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -61,7 +64,7 @@ public class TransformerTest
     {
         for (String file : allTestStylesheets() )
         {
-            Set<String> classes = getCssClasses( reader.readFile(file) );
+            Collection<String> classes = getCssClasses( reader.readFile(file) );
             assertNotNull(classes);
 
             //normalize.css contains no classes, therefore it should be empty:
@@ -69,6 +72,14 @@ public class TransformerTest
                 assertFalse(classes.toString(), classes.isEmpty() );
             else
                 assertTrue( classes.toString(), classes.isEmpty() );
+
+            //Make sure each css class is counted only once:
+            List<String> checkedList = new ArrayList<>( classes.size() );
+            classes.stream().forEach(clazz ->
+            {
+                assertFalse(clazz, checkedList.contains(clazz));
+                checkedList.add(clazz);
+            });
         }
     }
 
