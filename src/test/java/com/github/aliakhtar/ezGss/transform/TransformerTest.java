@@ -101,6 +101,7 @@ public class TransformerTest
             Transformer t = new Transformer( reader.readFile(file) );
             assertTrue(t.toString(), t.getCssClasses().size() == t.getJavaMethodNames().size() );
             assertTrue( t.toString(), t.getCssClasses().size() == t.getTransformations().size() );
+
             if (! NORMALIZE.equals(file))
                 assertFalse( t.toString(), t.getTransformations().isEmpty() );
             else
