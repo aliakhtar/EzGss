@@ -70,7 +70,7 @@ the file already exists, it will be overwritten. For example, if the directories
 didn't exist when the above command was run, they would be created.
 
 
-##Conversion of CSS class names to java methods
+##Conversion of CSS class names to Java methods
 
 All css class names would be converted from hyphens or underscores to camelCase. E.g:
 `foo-bar` will become `fooBar`, `foo_bar` will become `fooBar`, `FOOBAR`, `fooBar`, 
@@ -82,17 +82,13 @@ All css class names would be converted from hyphens or underscores to camelCase.
  
 ##Known Issues
  
-If a css class contains either an underscore or a hyphen, it will be lower cased,
-hyphens / underscores removed, and it will attempt to lower case it. Normally
-this works without issue, but if you have a mix of camel case and underscores/hyphens,
-your css style will be completely lower cased. E.g `camelCaseCase1` will become
-`camelcasecase1`.
-
-As long as you don't have a mix of camelCase and hyphens/underscores in the same 
-class name, you shouldn't encounter this issue.
+If you have a mix of hyphens/underscores and camelCase in your css class names,
+be aware that the resulting java method will be in completely lower case with
+hyphens/underscores removed. E.g `.camelCaseTest_1` will have the method 
+`camelcasetest_1`.
 
 If the file specified in `dest` already exists, it will be overwritten. Its
-not recommended to use this tool unless you have version control set up in your
+not recommended to use this tool if you don't have version control set up in your
 project.
 
 This library is experimental, please examine the output carefully. Use at
@@ -100,11 +96,11 @@ your own risk!
 
 ##Wish List
 
-- Ability to run files in batch, take a directory and run across all the .gss
+- Ability to run files in batch, e.g to take a directory and run across all the .gss
 files inside as well as sub-directories, without needing each file to be specified
 individually.
 
-- Generate the `ClientBundle` for the .gss files as well.
+- Generate the `ClientBundle` for the CssResources as well.
 
 Pull requests welcome!
 

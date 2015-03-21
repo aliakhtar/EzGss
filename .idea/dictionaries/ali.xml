@@ -2,7 +2,9 @@
   <dictionary name="ali">
     <words>
       <w>camelcasecase</w>
+      <w>camelcasetest</w>
       <w>camelcasewrong</w>
+      <w>case'd</w>
       <w>signup</w>
     </words>
   </dictionary>
