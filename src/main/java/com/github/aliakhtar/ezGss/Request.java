@@ -16,11 +16,13 @@ public class Request
 
     private final File source;
     private final File dest;
+    private final String packageName;
 
     private final String javaClassName;
 
-    public Request(String sourcePath, String destPath)
+    public Request(String sourcePath, String destPath, String packageName)
     {
+        this.packageName = packageName;
         source = new File(sourcePath );
 
         File dest = new File( destPath );
@@ -69,5 +71,10 @@ public class Request
     public File getDest()
     {
         return dest;
+    }
+
+    public String getPackageName()
+    {
+        return packageName;
     }
 }

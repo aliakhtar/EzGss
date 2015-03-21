@@ -22,33 +22,45 @@ public class Main
         validate(args);
         String cssBlob = new Reader().readFile( req.getSource().getAbsolutePath() );
 
-        transformer = new Transformer( req.getJavaClassName(), cssBlob );
-        new Writer().writeOrOverwrite(req.getDest().getAbsolutePath(), transformer.getFinalJavaCode() );
+        transformer = new Transformer(req.getPackageName(), req.getJavaClassName(),
+                                             cssBlob );
+        new Writer().writeOrOverwrite(req.getDest().getAbsolutePath(),
+                                             transformer.getFinalJavaCode() );
 
         exit( transformer.results(req) );
     }
 
     private void validate(String[] args)
     {
+        String usage = "Usage: java -jar EzGss.jar <source.gss> <dest[.java]> [package]";
         if (args.length == 0)
-            exit("Usage: java -jar EzGss.jar <source.gss> <dest[.java]>");
+            exit(usage);
 
-        if (args[0].trim().isEmpty() )
-            exit("Please provide the path to the source gss file.");
+        if (args[0].trim().isEmpty())
+            exit(usage);
+
+        if (args.length == 1 && args[0].toLowerCase().contains("help"))
+            exit(usage);
 
         if (args.length < 2 || args[1].trim().isEmpty() )
             exit("Please provide the path where the resulting GssResource interface will be written.");
 
-        if (args.length > 2)
-            exit( format("%d arguments provided, please provide 2 arguments, in the format: source dest", args.length) );
+        if (args.length > 3 || args[2].trim().isEmpty() )
+            exit( format("%d arguments provided, please provide 3 arguments, in the format: <source> <dest> [package]", args.length) );
 
         String source = args[0].trim();
         String dest = args[1].trim();
+        String packageName = "???";
 
         if (! source.toLowerCase().endsWith(".gss") )
             exit( format("%s doesn't end in .gss", source) );
 
-        req = new Request(source, dest);
+        if (args.length < 2 || args[2].trim().isEmpty() )
+            System.out.println( format("(No package name given, using %s as package)", packageName) );
+        else
+            packageName = args[2];
+
+        req = new Request(source, dest, packageName);
 
         if (! req.getSource().exists() )
             exit(format("Source file: %s does not exist", req.getSource().getAbsolutePath()));

@@ -36,6 +36,7 @@ public class Transformer implements Iterable<Transformation>
 
     private final Logger log = Logging.get(this);
 
+    private final String packageName;
     private final String javaClassName;
     private final Collection<String> cssClasses;
     private final Set<String> javaMethods;
@@ -43,9 +44,10 @@ public class Transformer implements Iterable<Transformation>
     private String finalOutput;
     private Set<String> reservedKeywords;
 
-    public Transformer(String javaClassName, String cssBlob)
+    public Transformer(String packageName, String javaClassName, String cssBlob)
             throws IOException
     {
+        this.packageName = packageName;
         this.javaClassName = javaClassName;
         cssClasses = getCssClasses( cssBlob );
         javaMethods = new HashSet<>( cssClasses.size() );
@@ -86,6 +88,7 @@ public class Transformer implements Iterable<Transformation>
     private String buildFinalOutput()
     {
         String tpl = FILE_TPL.replace("$className", javaClassName);
+        tpl = tpl.replace("$package", packageName);
         StringBuilder sb = new StringBuilder();
 
         Collections.sort(transforms);
