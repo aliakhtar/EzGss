@@ -80,6 +80,12 @@ All css class names would be converted from hyphens or underscores to camelCase.
  If a css class is a reserved java keyword, such as `switch`, an underscore
  will be appended to it in the method name, e.g `switch_`.
  
+##Recommended 
+
+Create a bash script / batch file containing the command to run this
+tool on all .gss files in your project. Simply run the script each time the Java files
+need to be synced / updated with the .gss files.
+ 
 ##Known Issues
  
 If you have a mix of hyphens/underscores and camelCase in your css class names,
