@@ -69,7 +69,6 @@ public class TransformerTest
                 assertFalse(classes.toString(), classes.isEmpty() );
             else
                 assertTrue( classes.toString(), classes.isEmpty() );
-            log.info( classes.toString() );
         }
     }
 
