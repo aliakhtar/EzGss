@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 public class Config
 {
-    private static final Logger log = Logging.get( Config.class );
     private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
     private static final String WORKING_DIR =  readWorkingDir();
+    private static final String EOL = System.lineSeparator();
 
 
     private static String readWorkingDir()
@@ -32,6 +32,11 @@ public class Config
     public static String separator()
     {
         return SEPARATOR;
+    }
+
+    public static String eol()
+    {
+        return EOL;
     }
 
     public static boolean exists(String path)

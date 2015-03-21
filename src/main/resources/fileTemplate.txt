@@ -2,7 +2,7 @@ package ???;
 
 import com.google.gwt.resources.client.CssResource;
 
-public interface Normalize extends CssResource
+public interface $className extends CssResource
 {
     $methods
 }

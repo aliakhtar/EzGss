@@ -15,6 +15,8 @@ import static java.lang.String.format;
 public class Transformer implements Iterable<Transformation>
 {
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
+    private final static Pattern COMMENT_PATTERN =
+            compile(COMMENT_REGEX, DOTALL);
 
     private final static String URL_REGEX = "url\\([^)]+?\\)";
     private static final Pattern URL_PATTERN =
@@ -30,13 +32,16 @@ public class Transformer implements Iterable<Transformation>
 
     private final Logger log = Logging.get(this);
 
+    private final String javaClassName;
     private final Collection<String> cssClasses;
     private final Set<String> javaMethods;
     private final List<Transformation> transforms;
+    private String finalOutput;
 
-    public Transformer(String cssBlob)
+    public Transformer(String javaClassName, String cssBlob)
             throws IOException
     {
+        this.javaClassName = javaClassName;
         cssClasses = getCssClasses( cssBlob );
         javaMethods = new HashSet<>( cssClasses.size() );
         transforms = new ArrayList<>( cssClasses.size() );
@@ -65,6 +70,30 @@ public class Transformer implements Iterable<Transformation>
         }
     }
 
+    public String getFinalJavaCode()
+    {
+        if (finalOutput == null)
+            finalOutput = buildFinalOutput();
+
+        return finalOutput;
+    }
+
+    private String buildFinalOutput()
+    {
+        String tpl = FILE_TPL.replace("$className", javaClassName);
+        StringBuilder sb = new StringBuilder();
+
+        for (Transformation t : transforms )
+        {
+            String method = METHOD_TPL.replace("$css", t.getCssClass());
+            method = method.replace("$java", t.getJavaMethod() );
+            sb.append(method);
+        }
+
+        tpl = tpl.replace("$methods", sb.toString() );
+        return tpl;
+    }
+
     public Collection<String> getCssClasses()
     {
         return cssClasses;
@@ -84,7 +113,7 @@ public class Transformer implements Iterable<Transformation>
 
     public static String stripComments(String cssBlob)
     {
-        return cssBlob.replaceAll(COMMENT_REGEX, "");
+        return COMMENT_PATTERN.matcher(cssBlob).replaceAll("");
     }
 
     public static String stripUrls(String cssBlob)
@@ -107,7 +136,8 @@ public class Transformer implements Iterable<Transformation>
         Set<String> classes = new HashSet<>();
         while (matcher.find() )
         {
-            classes.add( matcher.group() );
+            //Remove preceding . from className, to .foo becomes foo
+            classes.add( matcher.group().substring(1) );
         }
 
         return classes;

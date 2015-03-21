@@ -22,7 +22,7 @@ public class Reader
         try (BufferedReader reader = Files.newBufferedReader(path))
         {
             StringBuilder sb = new StringBuilder();
-            reader.lines().forEach(sb::append);
+            reader.lines().forEach(line -> addLine(sb, line));
 
             return sb.toString().trim();
         }
@@ -63,7 +63,12 @@ public class Reader
         throw new IllegalArgumentException("Path not found: " + path + " , attempted: " + newPath);
     }
 
-    public static String readResource(String path, boolean changeLineEndings)
+    private static void addLine(StringBuilder sb, String line)
+    {
+        sb.append(line).append(eol() );
+    }
+
+    public static String readResource(String path)
     {
         ClassLoader clsLoader = Reader.class.getClassLoader();
         try (
@@ -73,11 +78,8 @@ public class Reader
             )
         {
             StringBuilder sb = new StringBuilder();
-            reader.lines().forEach(sb::append);
-            if (! changeLineEndings)
+            reader.lines().forEach(line -> addLine(sb, line));
                 return sb.toString();
-            else
-                return sb.toString().replace("\n", "\r\n");
         }
         catch (Exception e)
         {

@@ -3,13 +3,11 @@ package com.github.aliakhtar.ezGss.transform;
 import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -91,6 +89,13 @@ public class TransformerTest
 
         java = toJavaMethodName("foo_Bar3_1");
         assertEquals(java, "fooBar31", java);
+
+        java = toJavaMethodName("camelCase");
+        assertEquals(java, "camelCase", java);
+
+        java = toJavaMethodName("camelCaseWrong_2");
+        assertEquals(java, "camelcasewrong2", java);
+
     }
 
     @Test
@@ -98,7 +103,7 @@ public class TransformerTest
     {
         for (String file : allTestStylesheets() )
         {
-            Transformer t = new Transformer( reader.readFile(file) );
+            Transformer t = new Transformer("", reader.readFile(file) );
             assertTrue(t.toString(), t.getCssClasses().size() == t.getJavaMethodNames().size() );
             assertTrue( t.toString(), t.getCssClasses().size() == t.getTransformations().size() );
 
@@ -106,6 +111,8 @@ public class TransformerTest
                 assertFalse( t.toString(), t.getTransformations().isEmpty() );
             else
                 assertTrue( t.toString(), t.getTransformations().isEmpty() );
+
+            System.out.println( t.getFinalJavaCode() );
         }
     }
 
