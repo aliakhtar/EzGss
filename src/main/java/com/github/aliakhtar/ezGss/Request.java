@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.github.aliakhtar.ezGss.io.Config.*;
 public class Request
 {
     private final Logger log = Logging.get(this);
@@ -18,16 +19,28 @@ public class Request
 
     private final String javaClassName;
 
-    public Request(String[] argsArray)
+    public Request(String sourcePath, String destPath)
     {
-        List<String> args = Arrays.asList(argsArray);
-        source = (args.get(0) != null)  ? new File(args.get(0)) : null;
-        dest = (args.get(1) != null) ? new File( args.get(1) ) : null;
+        source = new File(sourcePath );
 
-        javaClassName = (dest != null) ? detectJavaClassName() : null;
+        File dest = new File( destPath );
+
+        javaClassName = detectJavaClassName(dest);
+
+        if ( dest.getName().toLowerCase().endsWith(".java") )
+        {
+            this.dest = dest;
+            return;
+        }
+
+        if (! destPath.endsWith(  separator() ))
+            destPath += separator();
+
+        destPath += javaClassName + ".java";
+        this.dest = new File(destPath);
     }
 
-    private String detectJavaClassName()
+    private String detectJavaClassName(File dest)
     {
         //For Something.java , return Something, stripping out .java
         if (dest.isFile() || dest.getName().toLowerCase().endsWith(".java"))
@@ -46,5 +59,15 @@ public class Request
     public String getJavaClassName()
     {
         return javaClassName;
+    }
+
+    public File getSource()
+    {
+        return source;
+    }
+
+    public File getDest()
+    {
+        return dest;
     }
 }
