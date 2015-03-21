@@ -13,7 +13,12 @@ b {}
 #baz {}
 /* Testing multiline*/h1
 {
-
+    /**
+    Jack and jill
+    Went up the hill
+    to fetch a pale of water
+    */
+    color: #000000;
 }
 
 /**Testing long selector*/

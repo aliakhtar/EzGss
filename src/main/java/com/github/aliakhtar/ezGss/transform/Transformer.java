@@ -24,6 +24,7 @@ public class Transformer
     private final Set<String> rawClasses;
 
     private final static String COMMENT_REGEX = "/\\*.+?\\*/";
+    private final static String CSS_CLASS_PATTERN = "\\.[A-Z][\\w-]*";
 
     public Transformer(String sourcePath)
             throws IOException
