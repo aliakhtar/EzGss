@@ -3,6 +3,7 @@ package com.github.aliakhtar.ezGss.transform;
 import com.github.aliakhtar.ezGss.Request;
 import com.github.aliakhtar.ezGss.io.Reader;
 import com.github.aliakhtar.ezGss.util.Logging;
+import com.google.common.base.CaseFormat;
 
 import java.io.File;
 import java.io.IOException;
@@ -156,11 +157,34 @@ public class Transformer implements Iterable<Transformation>
     {
         String javaMethodName = cssClassName;
 
-        if (javaMethodName.contains("-"))
-            javaMethodName = LOWER_HYPHEN.to(LOWER_CAMEL, javaMethodName);
+        //Detect whether hyphen or underscore appears first, then
+        //covert them to lowerCamel in the order in which they occur. E.g
+        //for foo-bar_baz, it should be hypeh -> lowerCamel, then underscore ->
+        //lowerCamel, and for foo_bar-baz it should be underscore, then hyphen.
 
-        if (javaMethodName.contains("_"))
-            javaMethodName = LOWER_UNDERSCORE.to(LOWER_CAMEL, javaMethodName);
+        int hyphenIndex = javaMethodName.indexOf("-");
+        int underscoreIndex = javaMethodName.indexOf("_");
+
+        ArrayList<CaseFormat> conversions = new ArrayList<>(2);
+
+        if (hyphenIndex > underscoreIndex && hyphenIndex != -1)
+        {
+            conversions.add(LOWER_HYPHEN);
+            if (underscoreIndex > -1)
+                conversions.add(LOWER_UNDERSCORE);
+        }
+
+        else if (underscoreIndex > hyphenIndex && underscoreIndex != -1)
+        {
+            conversions.add(LOWER_UNDERSCORE);
+            if (hyphenIndex > -1)
+                conversions.add(LOWER_HYPHEN);
+        }
+
+        for (CaseFormat f : conversions)
+        {
+            javaMethodName = f.to(LOWER_CAMEL, javaMethodName);
+        }
 
         if (RESERVED_KEYWORDS.contains(javaMethodName))
             javaMethodName += "_";

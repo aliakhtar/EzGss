@@ -84,18 +84,23 @@ public class TransformerTest
     @Test
     public void testToJavaMethodName() throws Exception
     {
-        String java = toJavaMethodName("foo-bar-1");
-        assertEquals(java, "fooBar1", java);
+        assertJavaMethod("foobar", "foobar");
+        assertJavaMethod("foo-bar-baz-1", "fooBarBaz1");
+        assertJavaMethod("foo_bar_baz_2", "fooBarBaz2");
+        assertJavaMethod("FOOBAR", "FOOBAR");
+        assertJavaMethod("FOO_BAR", "fooBar");
 
-        java = toJavaMethodName("foo_Bar3_1");
-        assertEquals(java, "fooBar31", java);
+        assertJavaMethod("fooBar", "fooBar");
+        assertJavaMethod("fooBar-oops", "foobarOops");
+        assertJavaMethod("fooBar_oops2", "foobarOops2");
+        assertJavaMethod("foo_bar-baz_3", "fooBarbaz3");
+        assertJavaMethod("FOO-BAR_BAZ", "fooBarbaz");
+    }
 
-        java = toJavaMethodName("camelCase");
-        assertEquals(java, "camelCase", java);
-
-        java = toJavaMethodName("camelCaseWrong_2");
-        assertEquals(java, "camelcasewrong2", java);
-
+    private void assertJavaMethod(String input, String expected)
+    {
+        String actual = toJavaMethodName(input);
+        assertEquals(actual, expected, actual);
     }
 
     @Test

@@ -13,7 +13,7 @@ Takes the following:
 .switch{} /*Java reserved keyword*/
 ```
     
-and produces:    
+and produces (as a file or a string) :
 
 ```java
     package test;
@@ -75,17 +75,7 @@ the file already exists, it will be overwritten. For example, if the directories
 didn't exist when the above command was run, they would be created.
 
 
-##Conversion of CSS class names to Java methods
-
-All css class names would be converted from hyphens or underscores to camelCase. E.g:
-`foo-bar` will become `fooBar`, `foo_bar` will become `fooBar`, `FOOBAR`, `fooBar`, 
- and `FOO_BAR` will be unchanged, however **`camelCase_1` will become `camelcase1`** .
- (Notice that all letters were lower cased). 
- 
- If a css class is a reserved java keyword, such as `switch`, an underscore
- will be appended to it in the method name, e.g `switch_`.
- 
-##Recommended 
+##Recommended
 
 Create a bash script / batch file containing the commands to run this
 tool on all .gss files in your project. Simply run the script each time the Java files
