@@ -6,6 +6,7 @@ A tool for generating java CssResource files from .gss stylesheets, for
 Takes the following:
 
 ```css
+/*Either a string, or a file such as my-styles.css */
 .foo{}
 .foo-bar-1{}
 .foo_bar_2{}
@@ -14,11 +15,12 @@ Takes the following:
     
 and produces:    
 
+```java
     package test;
 
     import com.google.gwt.resources.client.CssResource;
 
-    public interface Test extends CssResource
+    public interface MyStyles extends CssResource
     {
         @ClassName("foo")
         String foo();
@@ -32,6 +34,7 @@ and produces:
         @ClassName("switch")
         String switch_();
     }
+```
 
 ##Install
 
