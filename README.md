@@ -1,14 +1,16 @@
 # EzGss
 
 A tool for generating java CssResource files from .gss stylesheets, for 
-[Google Web Toolkit](http://www.gwtproject.org).
+[GWT](http://www.gwtproject.org).
 
 Takes the following:
 
-    .foo{}
-    .foo-bar-1{}
-    .foo_bar_2{}
-    .switch{} /*Java reserved keyword*/
+```css
+.foo{}
+.foo-bar-1{}
+.foo_bar_2{}
+.switch{} /*Java reserved keyword*/
+```
     
 and produces:    
 
